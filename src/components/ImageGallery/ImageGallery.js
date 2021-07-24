@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import styles from "./ImageGallery.module.css";
 import ImageGalleryItem from "./ImageGalleryItem/ImageGalleryItem";
 
 class ImageGallery extends Component {
@@ -20,7 +21,7 @@ class ImageGallery extends Component {
   render() {
     console.log(this.state.picture);
     return (
-      <ul className="ImageGallery">
+      <ul className={styles.ImageGallery}>
         {this.state.picture &&
           this.state.picture.hits.map((hit) => (
             <ImageGalleryItem hit={hit} key={hit.id} />

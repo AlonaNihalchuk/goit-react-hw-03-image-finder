@@ -1,7 +1,7 @@
 import React from "react";
 import Loader from "react-loader-spinner";
 
-import "./App.css";
+import styles from "./App.module.css";
 import Modal from "../Modal/Modal";
 import Modal2 from "../Modal2/Modal2";
 import Searchbar from "../Searchbar/Searchbar";
@@ -28,7 +28,7 @@ class App extends React.Component {
   render() {
     const { showModal } = this.state;
     return (
-      <>
+      <section className={styles.phonebook}>
         {/* {this.state.picture && (<div>HI HI HI</div>)} */}
         {this.state.loading && (
           <Loader
@@ -55,7 +55,7 @@ class App extends React.Component {
             </button>
           </Modal>
         )}
-      </>
+      </section>
     );
   }
 }
