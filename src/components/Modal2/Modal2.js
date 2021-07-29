@@ -9,7 +9,7 @@ export default class Modal2 extends Component {
   static defaultProps = { pictureName: null, bigImg: null };
 
   static propTypes = {
-    onClick: PropTypes.func.isRequired,
+    onClick: PropTypes.func,
     onClose: PropTypes.func.isRequired,
     pictureName: PropTypes.string,
     bigImg: PropTypes.string,
@@ -25,7 +25,6 @@ export default class Modal2 extends Component {
 
   handleKeyDown = (e) => {
     if (e.code === "Escape") {
-      console.log(e.code);
       this.props.onClose();
     }
   };

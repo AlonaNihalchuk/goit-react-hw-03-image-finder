@@ -44,7 +44,7 @@ class App extends React.Component {
           return Promise.reject(new Error("there is no such a picture"));
         })
         .then((picture) => this.setState({ picture }))
-        .then(this.showButton())
+        .then(this.setState({ showButton: true }))
         .catch((error) => this.setState({ error }))
         .finally(() => this.setState({ loading: false }));
     }
@@ -84,12 +84,16 @@ class App extends React.Component {
     return (
       <section className={styles.phonebook}>
         <Searchbar onSubmit={this.handlePictureNameSubmit} picture={picture} />
-        <ImageGallery
-          picture={picture}
-          error={error}
-          pictureName={pictureName}
-          onClick={this.toggleModal}
-        />
+        {picture && (
+          <ImageGallery
+            picture={picture}
+            hits={picture.hits}
+            error={error}
+            pictureName={pictureName}
+            onClick={this.toggleModal}
+          />
+        )}
+
         {loading && (
           <Loader
             type="Puff"
