@@ -2,14 +2,13 @@ import styles from "./ImageGallery.module.css";
 import ImageGalleryItem from "./ImageGalleryItem/ImageGalleryItem";
 import PropTypes from "prop-types";
 
-const ImageGallery = ({ picture, hits, onClick, error }) => {
+const ImageGallery = ({ hits, onClick, error }) => {
   return (
     <>
       <ul className={styles.ImageGallery}>
-        {picture &&
+        {hits &&
           hits.map((hit) => (
             <ImageGalleryItem
-              hit={hit}
               key={hit.id}
               onClick={onClick}
               webformatURL={hit.webformatURL}
@@ -24,20 +23,19 @@ const ImageGallery = ({ picture, hits, onClick, error }) => {
 };
 
 ImageGallery.defaultProps = {
-  picture: null,
+  hits: [],
   error: null,
 };
 
 ImageGallery.propTypes = {
   onClick: PropTypes.func.isRequired,
 
-  picture: PropTypes.object,
   hits: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number,
-      webformatURL: PropTypes.string,
-      largeImageURL: PropTypes.string,
-      tags: PropTypes.string,
+      webformatURL: PropTypes.string.isRequired,
+      largeImageURL: PropTypes.string.isRequired,
+      tags: PropTypes.string.isRequired,
     }).isRequired
   ).isRequired,
   error: PropTypes.string,

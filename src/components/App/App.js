@@ -5,10 +5,11 @@ import Modal2 from "../Modal2/Modal2";
 import Searchbar from "../Searchbar/Searchbar";
 import ImageGallery from "../ImageGallery/ImageGallery";
 import Button from "../Button/Button";
+import fetchPictures from "../../fetch/api-service";
 
 class App extends React.Component {
   state = {
-    picture: null,
+    pictures: [],
     error: null,
     pictureName: "",
     loading: false,
@@ -24,8 +25,6 @@ class App extends React.Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    const API_KEY = "22623319-52f49cc6bb6df63b12d71d4de";
-    const BASE_URL = "https://pixabay.com/api/?";
     const { pictureName, page } = this.state;
 
     if (pictureName !== prevState.pictureName || page !== prevState.page) {
@@ -33,17 +32,12 @@ class App extends React.Component {
         loading: true,
         picture: null,
       });
-
-      fetch(
-        `${BASE_URL}q=${this.state.pictureName}&page=${this.state.page}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=12`
-      )
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          }
-          return Promise.reject(new Error("there is no such a picture"));
+      fetchPictures(pictureName, page)
+        .then(({ hits }) => {
+          this.setState(({ pictures }) => {
+            return { pictures: [...pictures, ...hits] };
+          });
         })
-        .then((picture) => this.setState({ picture }))
         .then(this.setState({ showButton: true }))
         .catch((error) => this.setState({ error }))
         .finally(() => this.setState({ loading: false }));
@@ -56,7 +50,12 @@ class App extends React.Component {
   }
 
   handlePictureNameSubmit = (pictureName) => {
+    this.reset();
     this.setState({ pictureName });
+  };
+
+  reset = () => {
+    this.setState({ page: 1, pictures: [] });
   };
 
   loadMore = (e) => {
@@ -72,7 +71,7 @@ class App extends React.Component {
 
   render() {
     const {
-      picture,
+      pictures,
       error,
       pictureName,
       loading,
@@ -83,11 +82,11 @@ class App extends React.Component {
 
     return (
       <section className={styles.phonebook}>
-        <Searchbar onSubmit={this.handlePictureNameSubmit} picture={picture} />
-        {picture && (
+        <Searchbar onSubmit={this.handlePictureNameSubmit} picture={pictures} />
+
+        {pictures && (
           <ImageGallery
-            picture={picture}
-            hits={picture.hits}
+            hits={pictures}
             error={error}
             pictureName={pictureName}
             onClick={this.toggleModal}
